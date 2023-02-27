@@ -1,0 +1,9 @@
+<div class="card-container" [class.active]="!_isFaceDown" [ngStyle]="{ transition: 'all ' + animationTime + 's' }"
+  [style.height.px]="height" [style.width.px]="width">
+
+  <img class="card card-img-top card-img-bottom card-back" [src]="backImg" [alt]="backImgAlt" [style.height.px]="height"
+    [style.width.px]="width" (click)="onClick(false)" />
+
+  <img class="card card-img-top card-img-bottom card-front" [src]="frontImg" [alt]="frontImgAlt"
+    [style.height.px]="height" [style.width.px]="width" (click)="onClick(true)" />
+</div>
