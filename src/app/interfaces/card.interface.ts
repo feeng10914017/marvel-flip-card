@@ -13,4 +13,6 @@ export interface CardInfo {
   frontImg: string;
   frontImgAlt: string;
   state: CardState;
+  canFlipper: boolean;
+  isMatch: boolean;
 }

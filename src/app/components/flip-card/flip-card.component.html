@@ -1,0 +1,11 @@
+<div class="h-100 w-100" #main>
+  <div class="gaming-zone" [ngStyle]="{'height.px':sideHeight, 'width.px':sideWidth, 'gap.px':cardGap}">
+    <ng-container *ngFor="let card of cardInfos">
+      <app-card [id]="card.id" [canFlipper]="card.canFlipper" [isMatch]="card.isMatch" [frontImg]="card.frontImg"
+        [frontImgAlt]="card.frontImgAlt" [backImg]="cardBackImage" [backImgAlt]="cardBackImageAlt"
+        [animationTime]="cardAnimationTime" [height]="cardHeight | toString" [width]="cardWidth | toString"
+        [(state)]="card.state" (flopEvent)="onFlop($event)" (floppedEvent)="onFlopped($event)"
+        (foldEvent)="onFold($event)" (foldedEvent)="onFolded($event)"></app-card>
+    </ng-container>
+  </div>
+</div>
