@@ -69,15 +69,33 @@ export class FlipCardComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private _handleGamingZoon(): void {
+    const gaps = this.cardGap * 3;
+    const pokerRatio = 0.63;
     const mainHeight: number = this.mainElement.nativeElement.clientHeight;
     const mainWidth: number = this.mainElement.nativeElement.clientWidth;
-    const shortSide = mainWidth >= mainHeight ? mainHeight : mainWidth;
-    const sideInteger = Math.floor(shortSide) - 1;
+    // const shortSide = mainWidth >= mainHeight ? mainHeight : mainWidth;
 
-    this.cardHeight = Math.floor((sideInteger - this.cardGap * 3) / 4);
-    this.cardWidth = Math.floor(this.cardHeight * 0.63);
-    this.sideHeight = sideInteger;
-    this.sideWidth = this.cardWidth * 4 + this.cardGap * 3;
+    // const sideInteger = Math.floor(shortSide) - 1;
+    // this.cardHeight = Math.floor((sideInteger - gaps) / 4);
+    // this.cardWidth = Math.floor(this.cardHeight * pokerRatio);
+    // this.sideHeight = sideInteger;
+    // this.sideWidth = this.cardWidth * 4 + gaps;
+
+    const isPokerRatio = mainWidth / mainHeight > pokerRatio;
+
+    if (isPokerRatio) {
+      const sideInteger = Math.floor(mainHeight) - 1;
+      this.cardHeight = Math.floor((sideInteger - gaps) / 4);
+      this.cardWidth = Math.floor(this.cardHeight * pokerRatio);
+      this.sideHeight = sideInteger;
+      this.sideWidth = this.cardWidth * 4 + gaps;
+    } else {
+      const sideInteger = Math.floor(mainWidth) - 1;
+      this.cardHeight = Math.floor(this.cardWidth / pokerRatio);
+      this.cardWidth = Math.floor((sideInteger - gaps) / 4);
+      this.sideHeight = this.cardHeight * 4 + gaps;
+      this.sideWidth = sideInteger;
+    }
   }
 
   private _initCardInfo() {
