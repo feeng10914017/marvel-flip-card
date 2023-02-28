@@ -1,0 +1,13 @@
+<div class="modal-body">
+  <h1 class="text-center" [class.text-success]="overResult" [class.text-danger]="!overResult">
+    YOU {{ overResult ? "WIN!" : "LOSE" }}
+  </h1>
+
+  <br />
+  <div class="text-center">
+    <button type="button" ngbAutofocus class="btn btn-outline-dark"
+      (click)="overResult ? activeModal.close() : activeModal.dismiss()">
+      again
+    </button>
+  </div>
+</div>

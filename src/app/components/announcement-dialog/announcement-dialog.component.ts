@@ -10,7 +10,5 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./announcement-dialog.component.scss'],
 })
 export class AnnouncementDialogComponent {
-  name = '12345';
-
   constructor(public activeModal: NgbActiveModal) {}
 }
