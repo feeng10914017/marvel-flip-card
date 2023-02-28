@@ -110,19 +110,30 @@ export class FlipCardComponent implements OnInit, OnChanges, AfterViewInit {
       }
     }
 
-    const newCardInfos: CardInfo[] = [];
-    randomHeros.forEach((hero, index) => {
-      const bufferInfo: CardInfo = {
-        id: index,
-        frontImg: this._imgPath + this.cardPathObj[hero],
-        frontImgAlt: hero,
-        state: CardState.FACE_DOWN,
-        canFlipper: true,
-        isMatch: false,
-      };
-      newCardInfos.push(bufferInfo);
-    });
-    this.cardInfos = newCardInfos;
+    if (this.cardInfos.length === 0) {
+      const newCardInfos: CardInfo[] = [];
+      randomHeros.forEach((hero, index) => {
+        const bufferInfo: CardInfo = {
+          id: index,
+          frontImg: this._imgPath + this.cardPathObj[hero],
+          frontImgAlt: hero,
+          state: CardState.FACE_DOWN,
+          canFlipper: true,
+          isMatch: false,
+        };
+        newCardInfos.push(bufferInfo);
+      });
+      this.cardInfos = newCardInfos;
+    } else {
+      this.cardInfos.forEach((info, index) => {
+        const hero = randomHeros[index];
+        info.frontImg = this._imgPath + this.cardPathObj[hero];
+        info.frontImgAlt = hero;
+        info.state = CardState.FACE_DOWN;
+        info.canFlipper = true;
+        info.isMatch = false;
+      });
+    }
   }
 
   protected onFlop(id: number): void {
