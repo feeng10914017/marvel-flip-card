@@ -5,13 +5,15 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Setting } from 'src/app/constants/setting.constant';
-import { CardBackImg, HeroImgs } from 'src/app/constants/card-imgs.constant';
+import { CardBackImg } from 'src/app/constants/card-imgs.constant';
 import { CardInfo } from 'src/app/interfaces/card.interface';
 import { CardState } from 'src/app/enums/card-state.enum';
 import { CardComponent } from '../card/card.component';
@@ -24,7 +26,7 @@ import { ToStringPipe } from 'src/app/pipes/to-string.pipe';
   templateUrl: './flip-card.component.html',
   styleUrls: ['./flip-card.component.scss'],
 })
-export class FlipCardComponent implements OnInit, AfterViewInit {
+export class FlipCardComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('main', { static: true }) mainElement!: ElementRef;
 
   @HostListener('window:resize', ['$event'])
@@ -32,7 +34,8 @@ export class FlipCardComponent implements OnInit, AfterViewInit {
     this._handleGamingZoon();
   }
 
-  @Input() heros: string[] = [];
+  @Input() cardNames: string[] = [];
+  @Input() cardPathObj: Record<string, string> = {};
   @Output() overEvent = new EventEmitter();
 
   private readonly _imgPath = Setting.imgPath;
@@ -51,6 +54,12 @@ export class FlipCardComponent implements OnInit, AfterViewInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['cardNames'] || changes['cardPathObj']) {
+      this._initCardInfo();
+    }
+  }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -72,23 +81,14 @@ export class FlipCardComponent implements OnInit, AfterViewInit {
   }
 
   private _initCardInfo() {
-    const heros = Object.keys(HeroImgs);
-    const newHeros: string[] = [];
-    while (newHeros.length < 8) {
-      const randomNum = Math.floor(Math.random() * heros.length);
-      const tempHero = heros[randomNum];
-      if (!newHeros.find((hero) => hero === tempHero)) {
-        newHeros.push(tempHero);
-      }
-    }
-
     const randomHeros: string[] = [];
     while (randomHeros.length < 16) {
-      const randomNum = Math.floor(Math.random() * newHeros.length);
+      const randomNum = Math.floor(Math.random() * this.cardNames.length);
       if (
-        randomHeros.filter((hero) => hero === newHeros[randomNum]).length !== 2
+        randomHeros.filter((hero) => hero === this.cardNames[randomNum])
+          .length !== 2
       ) {
-        randomHeros.push(newHeros[randomNum]);
+        randomHeros.push(this.cardNames[randomNum]);
       }
     }
 
@@ -96,7 +96,7 @@ export class FlipCardComponent implements OnInit, AfterViewInit {
     randomHeros.forEach((hero, index) => {
       const bufferInfo: CardInfo = {
         id: index,
-        frontImg: this._imgPath + HeroImgs[hero],
+        frontImg: this._imgPath + this.cardPathObj[hero],
         frontImgAlt: hero,
         state: CardState.FACE_DOWN,
         canFlipper: true,
