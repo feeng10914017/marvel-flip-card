@@ -4,6 +4,7 @@ import {
   ElementRef,
   EventEmitter,
   HostListener,
+  Input,
   OnInit,
   Output,
   ViewChild,
@@ -31,6 +32,7 @@ export class FlipCardComponent implements OnInit, AfterViewInit {
     this._handleGamingZoon();
   }
 
+  @Input() heros: string[] = [];
   @Output() overEvent = new EventEmitter();
 
   private readonly _imgPath = Setting.imgPath;
@@ -61,7 +63,7 @@ export class FlipCardComponent implements OnInit, AfterViewInit {
     const mainHeight: number = this.mainElement.nativeElement.clientHeight;
     const mainWidth: number = this.mainElement.nativeElement.clientWidth;
     const shortSide = mainWidth >= mainHeight ? mainHeight : mainWidth;
-    const sideInteger = Math.floor(shortSide);
+    const sideInteger = Math.floor(shortSide) - 1;
 
     this.cardHeight = Math.floor((sideInteger - this.cardGap * 3) / 4);
     this.cardWidth = Math.floor(this.cardHeight * 0.63);
@@ -90,6 +92,7 @@ export class FlipCardComponent implements OnInit, AfterViewInit {
       }
     }
 
+    const newCardInfos: CardInfo[] = [];
     randomHeros.forEach((hero, index) => {
       const bufferInfo: CardInfo = {
         id: index,
@@ -99,8 +102,9 @@ export class FlipCardComponent implements OnInit, AfterViewInit {
         canFlipper: true,
         isMatch: false,
       };
-      this.cardInfos.push(bufferInfo);
+      newCardInfos.push(bufferInfo);
     });
+    this.cardInfos = newCardInfos;
   }
 
   protected onFlop(id: number): void {

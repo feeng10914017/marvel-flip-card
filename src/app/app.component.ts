@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { interval, Subscription, tap, timer } from 'rxjs';
+import { interval, Subscription, tap } from 'rxjs';
 import { AnnouncementDialogComponent } from './components/announcement-dialog/announcement-dialog.component';
 import { FlipCardComponent } from './components/flip-card/flip-card.component';
 import { OverDialogComponent } from './components/over-dialog/over-dialog.component';
@@ -17,7 +17,7 @@ import { DialogService } from './services/dialog/dialog.service';
 export class AppComponent implements OnInit {
   private _timer: Subscription | null = null;
   protected readonly title = 'marvel flip';
-  protected isReady = false;
+  protected hasReadAnnouncement = false;
   protected seconds = 0;
 
   constructor(private dialogService: DialogService) {}
@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
       .open(AnnouncementDialogComponent, 'large', true, true)
       .result.then(
         (result) => {
-          this.isReady = true;
+          this.hasReadAnnouncement = true;
           this._startInterval();
         },
         (reason) => {}
@@ -45,8 +45,8 @@ export class AppComponent implements OnInit {
       .pipe(tap(() => this.seconds--))
       .subscribe(() => {
         if (this.seconds !== 0) return;
-        this._showOverDialog(true);
         this._endInterval();
+        this._showOverDialog(false);
       });
   }
 
@@ -69,5 +69,10 @@ export class AppComponent implements OnInit {
       (result) => this._startInterval(),
       (reason) => this._startInterval()
     );
+  }
+
+  protected onOver(): void {
+    this._endInterval();
+    this._showOverDialog(true);
   }
 }
