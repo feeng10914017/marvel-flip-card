@@ -110,46 +110,25 @@ export class FlipCardComponent implements OnInit, OnChanges, AfterViewInit {
       }
     }
 
-    if (this.cardInfos.length === 0) {
-      const newCardInfos: CardInfo[] = [];
-      randomHeros.forEach((hero, index) => {
-        const bufferInfo: CardInfo = {
-          id: index,
-          frontImg: this._imgPath + this.cardPathObj[hero],
-          frontImgAlt: hero,
-          state: CardState.FACE_DOWN,
-          canFlipper: true,
-          isMatch: false,
-        };
-        newCardInfos.push(bufferInfo);
-      });
-      this.cardInfos = newCardInfos;
-    } else {
-      this.cardInfos.forEach((info, index) => {
-        const hero = randomHeros[index];
-        info.frontImg = this._imgPath + this.cardPathObj[hero];
-        info.frontImgAlt = hero;
-        info.state = CardState.FACE_DOWN;
-        info.canFlipper = true;
-        info.isMatch = false;
-      });
-    }
+    const newCardInfos: CardInfo[] = [];
+    randomHeros.forEach((hero, index) => {
+      const bufferInfo: CardInfo = {
+        id: index,
+        frontImg: this._imgPath + this.cardPathObj[hero],
+        frontImgAlt: hero,
+        state: CardState.FACE_DOWN,
+        canFlipper: true,
+        isMatch: false,
+      };
+      newCardInfos.push(bufferInfo);
+    });
+    this.cardInfos = newCardInfos;
   }
 
   protected onFlop(id: number): void {
     this._tempCards.push(id);
-
     if (this._tempCards.length === 2) {
       for (let info of this.cardInfos) info.canFlipper = false;
-
-      const firstCard = this.cardInfos[this._tempCards[0]];
-      const secondCard = this.cardInfos[this._tempCards[1]];
-      if (firstCard.frontImg === secondCard.frontImg) {
-        firstCard.isMatch = true;
-        secondCard.isMatch = true;
-      }
-
-      if (!this.cardInfos.find((info) => !info.isMatch)) this.overEvent.emit();
     }
   }
 
@@ -159,15 +138,21 @@ export class FlipCardComponent implements OnInit, OnChanges, AfterViewInit {
 
     const firstCard = this.cardInfos[this._tempCards[0]];
     const secondCard = this.cardInfos[this._tempCards[1]];
-    if (firstCard.frontImg === secondCard.frontImg) {
+    const isMatch = firstCard.frontImg === secondCard.frontImg;
+    if (isMatch) {
+      firstCard.isMatch = true;
+      secondCard.isMatch = true;
+    } else {
       firstCard.state = CardState.FACE_DOWN;
       secondCard.state = CardState.FACE_DOWN;
     }
 
     this._tempCards = [];
-    for (let card of this.cardInfos) {
-      if (!card.isMatch) card.canFlipper = true;
+    for (let info of this.cardInfos) {
+      if (!info.isMatch) info.canFlipper = true;
     }
+
+    if (!this.cardInfos.find((info) => !info.isMatch)) this.overEvent.emit();
   }
 
   protected onFold(id: number): void {
