@@ -138,8 +138,18 @@ export class FlipCardComponent implements OnInit, OnChanges, AfterViewInit {
 
   protected onFlop(id: number): void {
     this._tempCards.push(id);
+
     if (this._tempCards.length === 2) {
       for (let info of this.cardInfos) info.canFlipper = false;
+
+      const firstCard = this.cardInfos[this._tempCards[0]];
+      const secondCard = this.cardInfos[this._tempCards[1]];
+      if (firstCard.frontImg === secondCard.frontImg) {
+        firstCard.isMatch = true;
+        secondCard.isMatch = true;
+      }
+
+      if (!this.cardInfos.find((info) => !info.isMatch)) this.overEvent.emit();
     }
   }
 
@@ -149,21 +159,15 @@ export class FlipCardComponent implements OnInit, OnChanges, AfterViewInit {
 
     const firstCard = this.cardInfos[this._tempCards[0]];
     const secondCard = this.cardInfos[this._tempCards[1]];
-    const isMatch = firstCard.frontImg === secondCard.frontImg;
-    if (isMatch) {
-      firstCard.isMatch = true;
-      secondCard.isMatch = true;
-    } else {
+    if (firstCard.frontImg === secondCard.frontImg) {
       firstCard.state = CardState.FACE_DOWN;
       secondCard.state = CardState.FACE_DOWN;
     }
 
     this._tempCards = [];
-    for (let info of this.cardInfos) {
-      if (!info.isMatch) info.canFlipper = true;
+    for (let card of this.cardInfos) {
+      if (!card.isMatch) card.canFlipper = true;
     }
-
-    if (!this.cardInfos.find((info) => !info.isMatch)) this.overEvent.emit();
   }
 
   protected onFold(id: number): void {
