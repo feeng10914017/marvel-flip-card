@@ -1,4 +1,4 @@
-import { CardState } from '../enums/card-state.enum';
+import { CardState } from '../shared/enums/card-state.enum';
 
 export interface Card extends CardInfo {
   backImg: string;

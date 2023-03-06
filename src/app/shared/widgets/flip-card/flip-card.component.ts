@@ -12,12 +12,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Setting } from 'src/app/constants/setting.constant';
-import { CardBackImg } from 'src/app/constants/card-imgs.constant';
+import { Setting } from 'src/app/shared/constants/setting.constant';
+import { CardBackImg } from 'src/app/shared/constants/card-imgs.constant';
 import { CardInfo } from 'src/app/interfaces/card.interface';
-import { CardState } from 'src/app/enums/card-state.enum';
+import { CardState } from 'src/app/shared/enums/card-state.enum';
 import { CardComponent } from '../card/card.component';
-import { ToStringPipe } from 'src/app/pipes/to-string.pipe';
+import { ToStringPipe } from 'src/app/shared/pipes/to-string.pipe';
 
 @Component({
   selector: 'app-flip-card',
@@ -102,10 +102,7 @@ export class FlipCardComponent implements OnInit, OnChanges, AfterViewInit {
     const randomHeros: string[] = [];
     while (randomHeros.length < 16) {
       const randomNum = Math.floor(Math.random() * this.cardNames.length);
-      if (
-        randomHeros.filter((hero) => hero === this.cardNames[randomNum])
-          .length !== 2
-      ) {
+      if (randomHeros.filter(hero => hero === this.cardNames[randomNum]).length !== 2) {
         randomHeros.push(this.cardNames[randomNum]);
       }
     }
@@ -152,11 +149,11 @@ export class FlipCardComponent implements OnInit, OnChanges, AfterViewInit {
       if (!info.isMatch) info.canFlipper = true;
     }
 
-    if (!this.cardInfos.find((info) => !info.isMatch)) this.overEvent.emit();
+    if (!this.cardInfos.find(info => !info.isMatch)) this.overEvent.emit();
   }
 
   protected onFold(id: number): void {
-    this._tempCards = this._tempCards.filter((tempId) => tempId !== id);
+    this._tempCards = this._tempCards.filter(tempId => tempId !== id);
   }
 
   protected onFolded(id: number): void {}

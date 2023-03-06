@@ -1,13 +1,6 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CardState } from 'src/app/enums/card-state.enum';
+import { CardState } from 'src/app/shared/enums/card-state.enum';
 import { Card } from 'src/app/interfaces/card.interface';
 
 @Component({

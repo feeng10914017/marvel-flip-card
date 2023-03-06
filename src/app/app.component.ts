@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { interval, Subscription, tap } from 'rxjs';
-import { FlipCardComponent } from './components/flip-card/flip-card.component';
+import { DialogService } from './core/dialog/dialog.service';
+import { HeroImgs } from './shared/constants/card-imgs.constant';
+import { FlipCardComponent } from './shared/widgets/flip-card/flip-card.component';
 import { AnnouncementDialogComponent } from './shared/dialog-content/announcement-dialog/announcement-dialog.component';
 import { OverDialogComponent } from './shared/dialog-content/over-dialog/over-dialog.component';
-import { HeroImgs } from './constants/card-imgs.constant';
-import { DialogService } from './core/dialog/dialog.service';
 
 @Component({
   selector: 'app-root',
