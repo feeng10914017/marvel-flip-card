@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-announcement-dialog',
@@ -9,6 +8,4 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './announcement-dialog.component.html',
   styleUrls: ['./announcement-dialog.component.scss'],
 })
-export class AnnouncementDialogComponent {
-  constructor(public activeModal: NgbActiveModal) {}
-}
+export class AnnouncementDialogComponent {}

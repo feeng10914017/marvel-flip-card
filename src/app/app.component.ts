@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { interval, Subscription, tap } from 'rxjs';
-import { AnnouncementDialogComponent } from './components/announcement-dialog/announcement-dialog.component';
 import { FlipCardComponent } from './components/flip-card/flip-card.component';
-import { OverDialogComponent } from './components/over-dialog/over-dialog.component';
+import { AnnouncementDialogComponent } from './shared/dialog-content/announcement-dialog/announcement-dialog.component';
+import { OverDialogComponent } from './shared/dialog-content/over-dialog/over-dialog.component';
 import { HeroImgs } from './constants/card-imgs.constant';
-import { DialogService } from './services/dialog/dialog.service';
+import { DialogService } from './core/dialog/dialog.service';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
     while (newHeros.length < num) {
       const randomNum = Math.floor(Math.random() * heros.length);
       const tempHero = heros[randomNum];
-      if (!newHeros.find((hero) => hero === tempHero)) {
+      if (!newHeros.find(hero => hero === tempHero)) {
         newHeros.push(tempHero);
       }
     }
@@ -50,15 +50,16 @@ export class AppComponent implements OnInit {
   }
 
   private _showAnnouncement(): void {
-    this.dialogService
-      .open(AnnouncementDialogComponent, 'large', true, true)
-      .result.then(
-        (result) => {
-          this.hasReadAnnouncement = true;
-          this._onStart();
-        },
-        (reason) => {}
-      );
+    const dialogRef = this.dialogService.open(AnnouncementDialogComponent, 'large', true);
+    dialogRef.componentInstance.title = 'announcement';
+    dialogRef.componentInstance.positiveButtonText = 'start';
+    dialogRef.result.then(
+      result => {
+        this.hasReadAnnouncement = true;
+        this._onStart();
+      },
+      reason => {}
+    );
   }
 
   private _startInterval(): void {
@@ -83,13 +84,9 @@ export class AppComponent implements OnInit {
     if (this._isEndGame) return;
     this._isEndGame = true;
 
-    const dialogRef = this.dialogService.open(
-      OverDialogComponent,
-      'small',
-      true,
-      true
-    );
-    dialogRef.componentInstance.overResult = isWin;
+    const dialogRef = this.dialogService.open(OverDialogComponent, 'small', true);
+    dialogRef.componentInstance.title = '';
+    dialogRef.componentInstance.contentInputs = { overResult: isWin };
     dialogRef.result.finally(() => {
       this._onStart();
       this._isEndGame = false;

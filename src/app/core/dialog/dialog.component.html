@@ -1,0 +1,25 @@
+<div class="modal-header justify-content-center text-uppercase">
+  <h3 class="modal-title" id="modal-title">{{ title }}</h3>
+</div>
+
+<div class="modal-body py-0">
+  <ng-template appViewContainer></ng-template>
+</div>
+
+<div class="modal-footer justify-content-center">
+  <button
+    *ngIf="!hideNegativeButton"
+    type="button"
+    class="btn btn-outline-danger"
+    (click)="activeModal.dismiss()">
+    {{ negativeButtonText }}
+  </button>
+  <button
+    *ngIf="!hidePositiveButton"
+    type="button"
+    ngbAutofocus
+    class="btn btn-outline-dark"
+    (click)="activeModal.close()">
+    {{ positiveButtonText }}
+  </button>
+</div>
