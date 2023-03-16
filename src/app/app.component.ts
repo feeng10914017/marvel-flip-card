@@ -5,7 +5,7 @@ import { interval, Subscription, tap } from 'rxjs';
 import { DialogService } from './core/dialog/dialog.service';
 import { HeroImgs } from './shared/constants/card-imgs.constant';
 import { FlipCardComponent } from './shared/widgets/flip-card/flip-card.component';
-import { AnnouncementDialogComponent } from './shared/dialog-content/announcement-dialog/announcement-dialog.component';
+import { IntroductionDialogComponent } from './shared/dialog-content/introduction-dialog/introduction-dialog.component';
 import { OverDialogComponent } from './shared/dialog-content/over-dialog/over-dialog.component';
 
 @Component({
@@ -50,8 +50,8 @@ export class AppComponent implements OnInit {
   }
 
   private _showAnnouncement(): void {
-    const dialogRef = this.dialogService.open(AnnouncementDialogComponent, 'large', true);
-    dialogRef.componentInstance.title = 'announcement';
+    const dialogRef = this.dialogService.open(IntroductionDialogComponent, 'large', true);
+    dialogRef.componentInstance.title = 'introduction';
     dialogRef.componentInstance.positiveButtonText = 'start';
     dialogRef.result.then(
       result => {
